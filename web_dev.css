@@ -67,12 +67,28 @@
 }
 
 /* End of Navigation */
-.home-panel-header{
-    width: 100%;
-    height: 200px;
-    background-color: crimson;
+.grid-container{
+    display: grid;
+    width: 800px;
+    border: 2px solid black;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    margin: auto;
+    margin-top: 75px;
 }
 
-p {
-    color: lightblue;
+.lightbrown{
+    background-color: burlywood;
+    height: 80px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    border: 1px solid black;
+}
+
+.brown{
+    background-color: brown;
+    height: 80px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    border: 1px solid black;
 }
