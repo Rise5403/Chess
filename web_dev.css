@@ -31,6 +31,8 @@
 
 .Navigation-Bar{
     border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-radius: 5px 5px;
     margin-bottom: 5px;
 }
 
@@ -67,7 +69,10 @@
 }
 
 /* End of Navigation */
-.grid-container{
+
+/* my grid*/
+
+/* .grid-container{
     display: grid;
     width: 800px;
     border: 2px solid black;
@@ -75,9 +80,9 @@
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     margin: auto;
     margin-top: 75px;
-}
+} */
 
-.lightbrown{
+/* .lightbrown{
     background-color: burlywood;
     height: 80px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -91,4 +96,26 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     border: 1px solid black;
+} */
+
+/* youtuber grid */
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(8,75px);
+    border: 3px solid black;
+    height: 605px;
+    width: 605px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.square{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 75px;
+    border: 1px solid black;
+    cursor: pointer;
 }
