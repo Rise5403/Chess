@@ -12,24 +12,9 @@
 }
 
 /* Start of Navigation */
-@media screen and (min-width: 768px) {
 
 .Navigation-Bar{
-    background-color: white;
     text-align: center;
-    height: 35px;
-    width: 100%;
-}}
-
-@media screen and (max-width: 767px){
-    .Navigation-Bar{
-        background-color: beige;
-        text-align: center;
-        height: 50px;
-        width: 100%;
-}} 
-
-.Navigation-Bar{
     border-bottom: 1px solid black;
     border-top: 1px solid black;
     border-radius: 5px 5px;
@@ -50,16 +35,6 @@
     color: black;
 }
 
-@media screen and (max-width: 767px){
-.Navigation-Bar ul li a{
-    text-decoration: none;
-    text-transform: capitalize;
-    margin: 40px;
-    font-size: 35px;
-    font-family: cursive;
-    color: black;
-}}
-
 .Navigation-Bar ul li a:hover{
     color: crimson;
     transition: 1s;
@@ -68,41 +43,14 @@
     border-bottom: 2.5px solid black;
 }
 
-/* End of Navigation */
+/* end of navigation */
 
-/* my grid*/
-
-/* .grid-container{
-    display: grid;
-    width: 800px;
-    border: 2px solid black;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    margin: auto;
-    margin-top: 75px;
-} */
-
-/* .lightbrown{
-    background-color: burlywood;
-    height: 80px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    border: 1px solid black;
-}
-
-.brown{
-    background-color: brown;
-    height: 80px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    border: 1px solid black;
-} */
-
-/* youtuber grid */
+/* Start of board */
 
 .board{
     display: grid;
-    grid-template-columns: repeat(8,75px);
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
     border: 3px solid black;
     height: 605px;
     width: 605px;
@@ -118,4 +66,49 @@
     height: 75px;
     border: 1px solid black;
     cursor: pointer;
+}
+
+/* end of board */
+
+/* start of panels */
+
+.grid-panel{
+    display: grid;
+    grid-template-columns:  0.5fr 1fr 0.5fr;
+    margin-top: 65px;
+    gap: 5px;
+    height: 300px;
+    background-color: transparent;
+}
+
+.first-slide{
+    border: 1px solid black;
+    background-color: burlywood;
+    text-align: center;
+    list-style-position: inside;
+    line-height: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.first-slide h3{
+    text-decoration: underline;
+    font-weight: lighter;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.second-slide{
+    border: 1px solid black;
+    background-color: pink;
+}
+
+.third-slide{
+    border: 1px solid black;
+    background-color: orange;
+}
+
+/* test white-space */
+
+.white-space{
+    width: 100%;
+    height: 200px;
 }
