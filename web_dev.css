@@ -29,7 +29,7 @@
   --sans: system-ui, -apple-system, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, sans-serif;
 
-  --radius: 14px;
+  --radius: 25px;
 }
 
 *, *::before, *::after {
