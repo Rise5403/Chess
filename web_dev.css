@@ -221,7 +221,7 @@ body {
    grid's intrinsic sizing. inset:16% leaves the piece at 68%. */
 .board .piece {
   position: absolute;
-  inset: 16%;
+  inset: 14%;
   width: auto;
   height: auto;
   pointer-events: none;
