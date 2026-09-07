@@ -4,4 +4,6 @@ Chess Game
 
 FREE TO PLAY CHESS GAME!
 
-Built with HTML/CSS/JS
+Built with HTML/CSS/JS 
+
+On claude!
