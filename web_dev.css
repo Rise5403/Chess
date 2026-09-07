@@ -1,0 +1,423 @@
+/* ============================================================
+   web_dev.css
+
+   Palette is taken from a tournament chess set: a buff-and-green
+   roll-up board on a dark walnut table, with brass from a
+   mechanical clock as the one accent.
+
+   Layout is mobile-first. The base rules assume a narrow screen;
+   the media query near the bottom adds the two-column desktop
+   arrangement. That order matters — writing wide-first and then
+   undoing it in a query is how stylesheets get tangled.
+   ============================================================ */
+
+:root {
+  --table:       #2a2521;
+  --panel:       #34302a;
+  --panel-soft:  #3d382f;
+  --line:        #4a443c;
+
+  --square-light: #e8dcc0;
+  --square-dark:  #5f7a55;
+
+  --piece-white: #f5f0e6;
+  --piece-black: #1f1c18;
+
+  --brass:  #c9a227;
+  --check:  #b4453c;
+
+  --text:   #e4ddd1;
+  --muted:  #a39a8b;
+
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
+*, *::before, *::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--table);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A max-width, not a fixed width. Below 1100px the page now
+   shrinks to fit instead of forcing a horizontal scrollbar. */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: 0 1.25rem 4rem;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+
+/* ---------- navigation ---------- */
+
+.Navigation-Bar {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2rem;
+}
+
+.Navigation-Bar ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 2rem;
+  list-style: none;
+  padding: 1.25rem 0;
+}
+
+.Navigation-Bar a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1.05rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.Navigation-Bar a:hover,
+.Navigation-Bar a[aria-current="page"] {
+  color: var(--text);
+  border-bottom-color: var(--brass);
+}
+
+
+/* ---------- page heading ---------- */
+
+.masthead {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.masthead h1 {
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.masthead p {
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 0.4rem auto 0;
+}
+
+
+/* ---------- game layout ---------- */
+
+.game {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.status {
+  text-align: center;
+  font-size: 1.15rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--panel);
+  margin-bottom: 1rem;
+}
+
+.status[data-tone="check"] { color: var(--check); border-color: var(--check); }
+.status[data-tone="win"]   { color: var(--brass); border-color: var(--brass); }
+.status[data-tone="draw"]  { color: var(--muted); }
+
+
+/* ---------- the board ---------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1 / 1;   /* stays square at any width */
+  margin-inline: auto;
+  border: 10px solid #241f1a;
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.45);
+}
+
+/* Squares are buttons so the board is keyboard-navigable and
+   screen readers announce each square. Width comes from the
+   grid, so no width is declared here. */
+.square {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* background-color, not the background shorthand: the move markers
+   below paint into background-image on the same element, and the
+   shorthand would wipe them out. */
+.square--light { background-color: var(--square-light); }
+.square--dark  { background-color: var(--square-dark); }
+
+/* Coordinates sit on the outer edge only, as printed on a real board. */
+.square[data-file]::after,
+.square[data-rank]::before {
+  position: absolute;
+  font-size: 0.62rem;
+  line-height: 1;
+  opacity: 0.75;
+  pointer-events: none;
+}
+.square[data-file]::after { content: attr(data-file); right: 3px; bottom: 2px; }
+.square[data-rank]::before { content: attr(data-rank); left: 3px; top: 2px; }
+.square--light::after, .square--light::before { color: var(--square-dark); }
+.square--dark::after,  .square--dark::before  { color: var(--square-light); }
+
+.square.is-last     { box-shadow: inset 0 0 0 4px rgb(201 162 39 / 0.55); }
+.square.is-selected { box-shadow: inset 0 0 0 4px var(--brass); }
+.square.is-check    { background-color: var(--check); }
+
+/* A dot for a quiet move, a ring for a capture — the shape says what
+   will happen, so colour is not carrying the meaning alone.
+
+   These are drawn as background images rather than ::before boxes on
+   purpose. The rank coordinate already uses ::before, and two rules
+   claiming the same pseudo-element at the same specificity means the
+   later one silently wins — the a-file numbers would vanish whenever
+   that square was a legal destination. */
+.square.is-move {
+  background-image: radial-gradient(circle at center,
+    rgb(31 28 24 / 0.32) 0 13%, transparent 13.5%);
+}
+.square.is-capture {
+  background-image: radial-gradient(circle at center,
+    transparent 0 33%, rgb(180 69 60 / 0.72) 33% 40%, transparent 40.5%);
+}
+
+.piece {
+  width: 68%;
+  height: 68%;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.35));
+}
+
+/* Silhouettes need an outline or the white pieces vanish on the
+   light squares. paint-order puts the stroke behind the fill so
+   the shape does not thicken. */
+.piece path {
+  paint-order: stroke fill;
+  stroke-width: 22px;
+  stroke-linejoin: round;
+}
+.piece--w path { fill: var(--piece-white); stroke: var(--piece-black); }
+.piece--b path { fill: var(--piece-black);  stroke: #6d6355; }
+
+
+/* ---------- side panel ---------- */
+
+.panel {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.panel section {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--panel);
+}
+
+.panel h2 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.moves {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 0.5rem 0.9rem 0.75rem;
+}
+
+.moves__empty { color: var(--muted); font-size: 0.9rem; padding: 0.4rem 0; }
+
+/* Numbered because chess moves genuinely are a numbered
+   sequence — the counter here is the real move number. */
+.moves__list { list-style: none; counter-reset: move; }
+
+.moves__list li {
+  counter-increment: move;
+  display: grid;
+  grid-template-columns: 2.4rem 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.moves__list li::before {
+  content: counter(move) ".";
+  color: var(--muted);
+  text-align: right;
+}
+.moves__list li:nth-child(odd) { background: rgb(255 255 255 / 0.02); }
+
+.taken {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 2.4rem;
+  padding: 0.4rem 0.9rem;
+  flex-wrap: wrap;
+}
+.taken + .taken { border-top: 1px solid var(--line); }
+.taken .piece { width: 1.5rem; height: 1.5rem; filter: none; }
+.taken .piece path { stroke-width: 26px; }
+
+.taken::after {
+  content: attr(data-edge);
+  margin-left: auto;
+  color: var(--brass);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.9rem;
+}
+
+.controls button {
+  flex: 1 1 auto;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.controls button:hover { border-color: var(--brass); color: var(--brass); }
+
+
+/* ---------- promotion ---------- */
+
+.promotion {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 0.72);
+  z-index: 20;
+}
+.promotion[hidden] { display: none; }
+
+.promotion__card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.25rem;
+  text-align: center;
+  max-width: 22rem;
+}
+.promotion__card h2 { font-weight: 400; margin-bottom: 0.9rem; }
+
+.promotion__choices { display: flex; gap: 0.5rem; }
+
+.promotion__option {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.6rem 0.3rem;
+  cursor: pointer;
+}
+.promotion__option:hover { border-color: var(--brass); }
+.promotion__option .piece { width: 2.2rem; height: 2.2rem; }
+
+
+/* ---------- advice panel ---------- */
+
+.grid-panel {
+  display: grid;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.grid-panel > * {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--panel);
+  padding: 1.1rem 1.3rem;
+}
+
+.grid-panel h3 {
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.grid-panel ol, .grid-panel ul { padding-left: 1.2rem; }
+.grid-panel li { margin-bottom: 0.3rem; }
+.grid-panel p { color: var(--muted); }
+.grid-panel dt { color: var(--text); margin-top: 0.6rem; }
+.grid-panel dd { color: var(--muted); font-size: 0.92rem; }
+
+
+/* ---------- prose pages ---------- */
+
+.prose { max-width: 68ch; margin-inline: auto; }
+.prose h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 2rem 0 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+.prose h3 { font-weight: 400; font-size: 1.15rem; margin: 1.4rem 0 0.4rem; color: var(--brass); }
+.prose p, .prose li { margin-bottom: 0.6rem; }
+.prose ul, .prose ol { padding-left: 1.3rem; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.prose th, .prose td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--muted); font-weight: 400; }
+
+.white-space { height: 3rem; }
+
+
+/* ---------- desktop ---------- */
+
+@media (min-width: 900px) {
+  .game {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2rem;
+  }
+  .grid-panel { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; }
+}
