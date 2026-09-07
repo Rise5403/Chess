@@ -578,8 +578,9 @@ document.addEventListener("DOMContentLoaded", () => {
       ? findKing(state, state.turn) : -1;
 
     boardEl.innerHTML = "";
-    boardEl.classList.toggle("board--flipped", flipped);
 
+    // Flipping is done by reversing the order the squares are drawn in,
+    // not by a CSS transform — a transform would mirror the pieces too.
     const order = [...Array(64).keys()];
     if (flipped) order.reverse();
 
@@ -621,6 +622,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawStatus() {
     const status = gameStatus(state, history);
     const mover = state.turn === "w" ? "White" : "Black";
+    // The stylesheet colours the indicator dot from this.
+    statusEl.dataset.turn = state.turn;
 
     if (status.over) {
       let text;
