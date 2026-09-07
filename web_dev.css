@@ -232,7 +232,8 @@ body {
    the shape does not thicken. */
 .piece path {
   paint-order: stroke fill;
-  stroke-width: 18px;
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;   /* add this line */
   stroke-linejoin: round;
 }
 .piece--w path { fill: var(--piece-white); stroke: var(--piece-black); }
