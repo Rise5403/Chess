@@ -154,7 +154,7 @@ body {
   grid-template-rows: repeat(8, minmax(0, 1fr));
 
   width: 100%;
-  max-width: 760px;
+  max-width: 560px;
   aspect-ratio: 1 / 1;
   border-radius: var(--radius);
   overflow: hidden;          /* clips the corner squares to the radius */
@@ -221,7 +221,7 @@ body {
    grid's intrinsic sizing. inset:16% leaves the piece at 68%. */
 .board .piece {
   position: absolute;
-  inset: 14%;
+  inset: 16%;
   width: auto;
   height: auto;
   pointer-events: none;
